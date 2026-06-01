@@ -1,398 +1,909 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Adventures in Karaoke | Mac McClanahan</title>
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Adventures in Karaoke | Mac McClanahan</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+/* ========== RESET & VARIABLES ========== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a14;--bg2:#111120;--bg3:#18182e;--card:#1e1e34;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);
+  --red:#ff2d55;--gold:#ffcc00;--cyan:#00e5ff;--green:#34c759;--orange:#ff9f0a;
+  --text:#f0f0f8;--muted:#7878a0;
+  --grad:linear-gradient(135deg,#ff2d55,#ff9f0a);
+  --grad2:linear-gradient(135deg,#00e5ff,#0066ff);
+  --r:14px;--shadow:0 8px 32px rgba(0,0,0,0.5);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+
+/* ========== SCROLLBAR ========== */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+
+/* ========== NAVBAR ========== */
+.navbar{
+  position:fixed;top:0;left:0;right:0;z-index:999;
+  display:flex;align-items:center;gap:16px;
+  padding:12px 28px;
+  background:rgba(10,10,20,0.9);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+.nav-logo-img{
+  width:48px;height:48px;border-radius:10px;
+  background:var(--grad);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.5rem;flex-shrink:0;overflow:hidden;
+}
+.nav-logo-img img{width:100%;height:100%;object-fit:cover;border-radius:10px}
+.nav-logo-text{font-family:'Bebas Neue',cursive;font-size:1.4rem;letter-spacing:1px;color:var(--text);line-height:1}
+.nav-logo-sub{font-size:0.65rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;font-weight:700}
+.nav-spacer{flex:1}
+.nav-links{display:flex;gap:4px;list-style:none}
+.nav-links a{
+  color:var(--muted);text-decoration:none;
+  font-size:0.78rem;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;
+  padding:6px 12px;border-radius:8px;transition:all .2s;
+}
+.nav-links a:hover{color:var(--red);background:rgba(255,45,85,0.1)}
+.hamburger{display:none;background:none;border:none;color:var(--text);font-size:1.4rem;cursor:pointer;padding:4px}
+
+/* ========== HERO ========== */
+.hero{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  text-align:center;position:relative;overflow:hidden;padding:100px 24px 60px;
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 50%,rgba(255,45,85,.18) 0%,transparent 70%),
+    radial-gradient(ellipse 50% 40% at 80% 30%,rgba(0,229,255,.12) 0%,transparent 70%),
+    radial-gradient(ellipse 40% 40% at 50% 80%,rgba(255,159,10,.1) 0%,transparent 70%),
+    var(--bg);
+  animation:bgPulse 10s ease-in-out infinite alternate;
+}
+@keyframes bgPulse{from{opacity:1}to{opacity:.7}}
+.hero-content{position:relative;z-index:2;animation:fadeUp .8s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.hero-mic{font-size:4.5rem;margin-bottom:16px;animation:bounce 2.5s ease-in-out infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.hero-title{
+  font-family:'Bebas Neue',cursive;
+  font-size:clamp(3.5rem,12vw,8rem);
+  letter-spacing:2px;line-height:.95;
+  background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  background-size:200%;animation:shimmer 4s linear infinite;
+}
+@keyframes shimmer{from{background-position:0%}to{background-position:200%}}
+.hero-name{font-size:1.2rem;color:var(--muted);margin:14px 0 6px}
+.hero-name strong{color:var(--gold)}
+.hero-tagline{font-size:1rem;color:var(--cyan);font-style:italic;margin-bottom:32px}
+.hero-contact{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-bottom:28px}
+.hero-contact a{color:var(--muted);text-decoration:none;font-size:.85rem;font-weight:700}
+.hero-contact a:hover{color:var(--red)}
+.hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.hero-wave{position:absolute;bottom:-1px;left:0;right:0}
+.hero-wave svg{display:block;width:100%;height:70px}
+
+/* ========== BUTTONS ========== */
+.btn{
+  display:inline-block;padding:13px 26px;border-radius:50px;
+  font-size:.88rem;font-weight:800;text-decoration:none;cursor:pointer;border:none;
+  transition:all .22s;text-transform:uppercase;letter-spacing:1px;font-family:'Nunito',sans-serif;
+}
+.btn-primary{background:var(--grad);color:#fff;box-shadow:0 4px 20px rgba(255,45,85,.4)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(255,45,85,.6)}
+.btn-outline{background:transparent;color:var(--text);border:2px solid var(--border2)}
+.btn-outline:hover{border-color:var(--red);color:var(--red)}
+.btn-full{width:100%;text-align:center}
+.btn-sm{padding:8px 18px;font-size:.78rem}
+.btn-green{background:var(--green);color:#fff}
+.btn-green:hover{transform:translateY(-1px);filter:brightness(1.1)}
+
+/* ========== SECTIONS ========== */
+.section{padding:80px 0}
+.section-alt{background:var(--bg2)}
+.container{max-width:1100px;margin:0 auto;padding:0 24px}
+.section-title{
+  font-family:'Bebas Neue',cursive;
+  font-size:clamp(2rem,5vw,3rem);
+  letter-spacing:1px;text-align:center;margin-bottom:8px;
+}
+.section-title span{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.section-sub{text-align:center;color:var(--muted);margin-bottom:40px;font-size:.95rem}
+
+/* ========== SONG LIBRARY ========== */
+.search-row{display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.search-input{
+  flex:1;min-width:200px;padding:13px 18px;
+  background:var(--card);border:1px solid var(--border);border-radius:var(--r);
+  color:var(--text);font-size:.95rem;font-family:'Nunito',sans-serif;transition:border .2s;
+}
+.search-input:focus{outline:none;border-color:var(--red)}
+.search-input::placeholder{color:var(--muted)}
+.genre-sel{
+  padding:13px 18px;background:var(--card);border:1px solid var(--border);
+  border-radius:var(--r);color:var(--text);font-size:.88rem;
+  font-family:'Nunito',sans-serif;cursor:pointer;min-width:150px;
+}
+.genre-sel:focus{outline:none;border-color:var(--red)}
+.genre-sel option{background:var(--bg3)}
+.song-count{color:var(--muted);font-size:.82rem;margin-bottom:10px}
+.table-wrap{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--r);
+  overflow:hidden;max-height:460px;overflow-y:auto;
+}
+.song-table{width:100%;border-collapse:collapse}
+.song-table thead th{
+  background:rgba(255,45,85,.1);padding:13px 16px;text-align:left;
+  font-size:.75rem;text-transform:uppercase;letter-spacing:1px;color:var(--red);
+  font-weight:800;position:sticky;top:0;z-index:2;backdrop-filter:blur(8px);
+}
+.song-table tbody tr{border-bottom:1px solid var(--border);transition:background .15s}
+.song-table tbody tr:hover{background:rgba(255,255,255,.03)}
+.song-table td{padding:11px 16px;font-size:.9rem}
+.song-table td:nth-child(2){color:var(--muted)}
+.gtag{
+  display:inline-block;padding:3px 10px;border-radius:20px;
+  background:rgba(255,255,255,.07);font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;
+}
+.no-results{text-align:center;padding:40px;color:var(--muted)}
+.no-results a{color:var(--red)}
+
+/* ========== SCHEDULE ========== */
+.sched-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px;margin-bottom:16px}
+.sched-card{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--r);
+  padding:24px;position:relative;overflow:hidden;transition:transform .2s,border-color .2s;
+}
+.sched-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--grad)}
+.sched-card:hover{transform:translateY(-3px);border-color:rgba(255,45,85,.3)}
+.sched-card.tonight{border-color:rgba(255,45,85,.5);box-shadow:0 0 20px rgba(255,45,85,.15)}
+.tonight-badge{
+  position:absolute;top:14px;right:14px;
+  background:var(--red);color:#fff;font-size:.65rem;font-weight:800;
+  padding:3px 9px;border-radius:20px;letter-spacing:1px;
+}
+.sched-day{font-family:'Bebas Neue',cursive;font-size:1.4rem;color:var(--gold);letter-spacing:1px}
+.sched-venue{font-size:1.05rem;font-weight:800;margin:4px 0 2px}
+.sched-addr{font-size:.82rem;color:var(--muted);margin-bottom:8px}
+.sched-time{font-size:.85rem;color:var(--cyan);font-weight:700}
+.sched-note{text-align:center;color:var(--muted);font-size:.85rem;font-style:italic}
+
+/* ========== FORMS ========== */
+.form-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:30px;max-width:680px;margin:0 auto}
+.form-row{display:flex;gap:14px;flex-wrap:wrap}
+.fg{flex:1;min-width:200px;margin-bottom:14px}
+.fg label{display:block;font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:6px}
+.fg input,.fg select,.fg textarea{
+  width:100%;padding:11px 15px;background:rgba(255,255,255,.05);
+  border:1px solid var(--border);border-radius:10px;
+  color:var(--text);font-size:.92rem;font-family:'Nunito',sans-serif;transition:border .2s;
+}
+.fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--red)}
+.fg input::placeholder,.fg textarea::placeholder{color:var(--muted)}
+.fg select option{background:var(--bg3)}
+.fg textarea{resize:vertical;min-height:80px}
+.checks{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.chk{
+  display:flex;align-items:center;gap:7px;cursor:pointer;
+  background:rgba(255,255,255,.05);padding:7px 13px;border-radius:8px;
+  border:1px solid var(--border);font-size:.88rem;font-weight:600;transition:border .2s;
+}
+.chk:hover{border-color:var(--red)}
+.chk input{accent-color:var(--red)}
+.form-success{text-align:center;padding:40px 20px;display:none}
+.form-success .sico{font-size:3rem;margin-bottom:12px}
+.form-success h3{font-size:1.4rem;margin-bottom:8px}
+.form-success p{color:var(--muted)}
+
+/* ========== REQUEST BOARD ========== */
+.sub-title{font-family:'Bebas Neue',cursive;font-size:1.6rem;letter-spacing:1px;text-align:center;margin:40px 0 20px}
+.req-board{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;max-width:900px;margin:0 auto}
+.req-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;position:relative}
+.req-song{font-weight:800;font-size:.92rem;margin-bottom:2px}
+.req-artist{color:var(--muted);font-size:.82rem;margin-bottom:6px}
+.req-by{font-size:.75rem;color:var(--gold);font-weight:700}
+.req-status{position:absolute;top:12px;right:12px;font-size:.68rem;padding:3px 8px;border-radius:20px;font-weight:800;text-transform:uppercase;letter-spacing:.5px}
+.s-pending{background:rgba(255,159,10,.15);color:var(--orange)}
+.s-added{background:rgba(52,199,89,.15);color:var(--green)}
+
+/* ========== EVENTS ========== */
+.events-wrap{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+.ev-feat{display:flex;gap:14px;align-items:flex-start;margin-bottom:22px}
+.ev-icon{width:46px;height:46px;background:rgba(255,45,85,.1);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0}
+.ev-feat h4{font-size:.95rem;font-weight:800;margin-bottom:3px}
+.ev-feat p{font-size:.85rem;color:var(--muted)}
+
+/* ========== TIP SECTION ========== */
+.tip-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;max-width:950px;margin:0 auto}
+.tip-card{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--r);
+  padding:26px 18px;text-align:center;cursor:pointer;
+  transition:transform .2s,border-color .2s,box-shadow .2s;
+}
+.tip-card:hover{transform:translateY(-4px);border-color:rgba(255,45,85,.4);box-shadow:0 0 30px rgba(255,45,85,.15)}
+.tip-logo{width:60px;height:60px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;font-weight:900;margin:0 auto 12px}
+.tip-card h3{font-size:1rem;font-weight:800;margin-bottom:4px}
+.tip-handle{font-size:.82rem;color:var(--muted);margin-bottom:12px}
+.tip-btn{
+  display:block;width:100%;padding:9px;border-radius:50px;
+  background:rgba(255,255,255,.07);border:1px solid var(--border);
+  color:var(--text);font-size:.8rem;font-weight:800;cursor:pointer;
+  font-family:'Nunito',sans-serif;transition:all .2s;text-transform:uppercase;letter-spacing:.5px;
+}
+.tip-btn:hover{background:var(--grad);border-color:transparent;color:#fff}
+.ca-logo{background:#00d632;color:#fff}
+.vm-logo{background:#3d95ce;color:#fff}
+.ze-logo{background:#6d1ed4;color:#fff}
+.pp-logo{background:#003087;color:#fff}
+.cd-logo{background:var(--bg3);font-size:1.2rem}
+
+/* ========== SOCIAL ========== */
+.social-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px;max-width:900px;margin:0 auto}
+.social-card{
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  padding:26px 16px;border-radius:var(--r);text-decoration:none;
+  color:#fff;font-weight:800;transition:transform .2s,box-shadow .2s;font-size:.95rem;
+}
+.social-card:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(0,0,0,.4)}
+.social-card small{font-size:.75rem;opacity:.7;font-weight:400}
+.soc-icon{font-size:1.8rem}
+.fb{background:#1877f2}
+.ig{background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045)}
+.yt{background:#ff0000}
+.rn{background:#e4003c}
+
+/* ========== CRM ========== */
+.crm-wrap{max-width:700px;margin:0 auto}
+
+/* ========== MODAL ========== */
+.modal-ov{
+  position:fixed;inset:0;background:rgba(0,0,0,.75);
+  backdrop-filter:blur(8px);z-index:9000;
+  display:flex;align-items:center;justify-content:center;padding:24px;
+  opacity:0;pointer-events:none;transition:opacity .3s;
+}
+.modal-ov.open{opacity:1;pointer-events:all}
+.modal-box{
+  background:var(--card);border:1px solid var(--border);border-radius:20px;
+  padding:32px;max-width:380px;width:100%;text-align:center;
+  position:relative;transform:scale(.9);transition:transform .3s;
+}
+.modal-ov.open .modal-box{transform:scale(1)}
+.modal-close{position:absolute;top:14px;right:16px;background:none;border:none;color:var(--muted);font-size:1.1rem;cursor:pointer}
+.modal-close:hover{color:var(--red)}
+.m-icon{width:68px;height:68px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;font-weight:900;margin:0 auto 14px}
+.m-name{font-family:'Bebas Neue',cursive;font-size:1.8rem;letter-spacing:1px;margin-bottom:8px}
+.m-handle{font-size:1.2rem;font-weight:800;color:var(--gold);margin-bottom:12px;word-break:break-all}
+.m-note{font-size:.85rem;color:var(--muted);margin-bottom:16px}
+.m-link{display:inline-block;margin-top:8px}
+
+/* ========== ADMIN PANEL ========== */
+.admin-fab{position:fixed;bottom:22px;right:22px;z-index:800}
+.admin-btn{
+  background:var(--grad);color:#fff;border:none;
+  padding:12px 20px;border-radius:50px;font-size:.82rem;font-weight:800;
+  cursor:pointer;box-shadow:0 4px 20px rgba(255,45,85,.4);
+  font-family:'Nunito',sans-serif;letter-spacing:.5px;text-transform:uppercase;
+}
+.admin-panel{
+  display:none;position:fixed;bottom:70px;right:22px;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--r);padding:22px;width:310px;
+  z-index:800;box-shadow:var(--shadow);
+  max-height:80vh;overflow-y:auto;
+}
+.admin-panel.open{display:block}
+.admin-panel h3{font-family:'Bebas Neue',cursive;font-size:1.1rem;letter-spacing:1px;color:var(--red);margin-bottom:14px}
+.admin-panel .fg{margin-bottom:10px}
+.admin-panel .fg label{font-size:.72rem}
+.admin-panel .fg input,.admin-panel .fg select{padding:9px 13px;font-size:.85rem}
+.admin-hr{border:none;border-top:1px solid var(--border);margin:16px 0}
+.admin-note{font-size:.75rem;color:var(--muted);margin-top:6px}
+.export-btns{display:flex;flex-direction:column;gap:8px}
+
+/* ========== FOOTER ========== */
+.footer{background:#06060f;border-top:1px solid var(--border);padding:40px 24px;text-align:center}
+.footer-logo{display:flex;align-items:center;justify-content:center;gap:10px;font-family:'Bebas Neue',cursive;font-size:1.4rem;letter-spacing:1px;margin-bottom:8px}
+.footer-sub{color:var(--muted);font-size:.82rem;margin-bottom:8px}
+.footer-contact{color:var(--muted);font-size:.82rem;margin-bottom:16px}
+.footer-contact a{color:var(--muted);text-decoration:none}
+.footer-contact a:hover{color:var(--red)}
+.footer-links{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-bottom:14px}
+.footer-links a{color:var(--muted);text-decoration:none;font-size:.82rem;font-weight:700}
+.footer-links a:hover{color:var(--red)}
+.footer-copy{color:rgba(255,255,255,.15);font-size:.75rem}
+
+/* ========== RESPONSIVE ========== */
+@media(max-width:768px){
+  .hamburger{display:block}
+  .nav-links{
+    display:none;position:fixed;top:65px;left:0;right:0;
+    background:var(--bg);flex-direction:column;
+    padding:16px;gap:2px;border-bottom:1px solid var(--border);
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 14px}
+  .events-wrap{grid-template-columns:1fr}
+  .section{padding:60px 0}
+  .form-card{padding:20px}
+  .song-table th:nth-child(3),.song-table td:nth-child(3),
+  .song-table th:nth-child(4),.song-table td:nth-child(4){display:none}
+  .hero-btns{flex-direction:column;align-items:center}
+}
+</style>
 </head>
 <body>
 
-  <!-- NAVBAR -->
-  <nav class="navbar" id="navbar">
-    <div class="nav-brand">
-      <span class="brand-icon">🎤</span>
-      <span class="brand-text">Adventures in Karaoke</span>
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <a class="nav-logo" href="#home">
+    <div class="nav-logo-img" id="navLogoImg">🎤</div>
+    <div>
+      <div class="nav-logo-text">Adventures in Karaoke</div>
+      <div class="nav-logo-sub">Mac McClanahan · KJ</div>
     </div>
-    <button class="hamburger" id="hamburger" aria-label="Menu">&#9776;</button>
-    <ul class="nav-links" id="navLinks">
-      <li><a href="#home">Home</a></li>
-      <li><a href="#songs">Songs</a></li>
-      <li><a href="#schedule">Schedule</a></li>
-      <li><a href="#request">Request a Song</a></li>
-      <li><a href="#events">Book an Event</a></li>
-      <li><a href="#tip">Tip Mac</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </nav>
+  </a>
+  <div class="nav-spacer"></div>
+  <button class="hamburger" id="hamburger">&#9776;</button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#songs">Songs</a></li>
+    <li><a href="#schedule">Schedule</a></li>
+    <li><a href="#request">Request</a></li>
+    <li><a href="#events">Book Event</a></li>
+    <li><a href="#tip">Tip Mac</a></li>
+    <li><a href="#social">Social</a></li>
+    <li><a href="#contact">Newsletter</a></li>
+  </ul>
+</nav>
 
-  <!-- HERO -->
-  <section class="hero" id="home">
-    <div class="hero-bg"></div>
-    <div class="hero-content">
-      <div class="hero-logo">🎤</div>
-      <h1 class="hero-title">Adventures in Karaoke</h1>
-      <p class="hero-sub">With Your Host <strong>Mac McClanahan</strong></p>
-      <p class="hero-tagline">The best night out starts with a mic in your hand</p>
-      <div class="hero-btns">
-        <a href="#songs" class="btn btn-primary">Browse Songs</a>
-        <a href="#schedule" class="btn btn-outline">Find Us Tonight</a>
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-mic">🎤</div>
+    <h1 class="hero-title">Adventures<br>in Karaoke</h1>
+    <p class="hero-name">Your Host <strong>Mac McClanahan</strong> · Bakersfield, CA</p>
+    <p class="hero-tagline">"The best night out starts with a mic in your hand"</p>
+    <div class="hero-contact">
+      <a href="tel:6613644388">📞 661-364-4388</a>
+      <a href="mailto:mac4jams@hotmail.com">✉️ mac4jams@hotmail.com</a>
+    </div>
+    <div class="hero-btns">
+      <a href="#songs" class="btn btn-primary">🎵 Browse Songs</a>
+      <a href="#schedule" class="btn btn-outline">📍 Find Us Tonight</a>
+      <a href="#events" class="btn btn-outline">🎉 Book an Event</a>
+    </div>
+  </div>
+  <div class="hero-wave">
+    <svg viewBox="0 0 1440 70" preserveAspectRatio="none"><path d="M0,35 C360,70 1080,0 1440,35 L1440,70 L0,70 Z" fill="#0a0a14"/></svg>
+  </div>
+</section>
+
+<!-- SONG LIBRARY -->
+<section class="section section-alt" id="songs">
+  <div class="container">
+    <h2 class="section-title">🎵 <span>Song Library</span></h2>
+    <p class="section-sub">Search our full catalog — thousands of songs available. Don't see yours? Request it below!</p>
+    <div class="search-row">
+      <input type="text" id="songSearch" class="search-input" placeholder="Search song title or artist…"/>
+      <select id="genreFilter" class="genre-sel">
+        <option value="">All Genres</option>
+        <option value="pop">Pop</option>
+        <option value="rock">Rock</option>
+        <option value="country">Country</option>
+        <option value="rnb">R&amp;B / Soul</option>
+        <option value="hiphop">Hip-Hop</option>
+        <option value="80s">80s Hits</option>
+        <option value="90s">90s Hits</option>
+        <option value="latin">Latin</option>
+        <option value="disney">Disney</option>
+        <option value="classic">Classic Rock</option>
+      </select>
+    </div>
+    <p class="song-count" id="songCount"></p>
+    <div class="table-wrap">
+      <table class="song-table">
+        <thead><tr><th>Title</th><th>Artist</th><th>Genre</th><th>Added</th></tr></thead>
+        <tbody id="songBody"></tbody>
+      </table>
+    </div>
+    <div class="no-results" id="noResults" style="display:none">
+      <p>🎵 Can't find it? <a href="#request">Request it here!</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- SCHEDULE -->
+<section class="section" id="schedule">
+  <div class="container">
+    <h2 class="section-title">📍 <span>Weekly Schedule</span></h2>
+    <p class="section-sub">Come sing with Mac! Here's where we'll be this week.</p>
+    <div class="sched-grid" id="schedGrid"></div>
+    <p class="sched-note">✨ Follow Mac on social media for real-time updates &amp; special event announcements!</p>
+  </div>
+</section>
+
+<!-- REQUEST A SONG -->
+<section class="section section-alt" id="request">
+  <div class="container">
+    <h2 class="section-title">🙋 <span>Request a New Song</span></h2>
+    <p class="section-sub">Don't see your favorite in the library? Ask Mac to add it!</p>
+    <div class="form-card">
+      <form id="reqForm">
+        <div class="form-row">
+          <div class="fg"><label>Your Name *</label><input type="text" id="rName" placeholder="Your name" required/></div>
+          <div class="fg"><label>Email (optional — get notified!)</label><input type="email" id="rEmail" placeholder="your@email.com"/></div>
+        </div>
+        <div class="form-row">
+          <div class="fg"><label>Song Title *</label><input type="text" id="rSong" placeholder="Song title" required/></div>
+          <div class="fg"><label>Artist *</label><input type="text" id="rArtist" placeholder="Artist name" required/></div>
+        </div>
+        <div class="fg"><label>Why should Mac add this one?</label><textarea id="rNote" placeholder="Tell Mac why this song belongs in the rotation…" rows="3"></textarea></div>
+        <button type="submit" class="btn btn-primary btn-full">🎤 Submit Request</button>
+      </form>
+      <div class="form-success" id="reqSuccess">
+        <div class="sico">🎉</div>
+        <h3>Request Sent!</h3>
+        <p>Mac got your request — you might hear your song at the next show!</p>
       </div>
     </div>
-    <div class="hero-wave">
-      <svg viewBox="0 0 1440 80" preserveAspectRatio="none"><path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="#0d0d1a"/></svg>
-    </div>
-  </section>
+    <h3 class="sub-title">📋 Recent Requests</h3>
+    <div class="req-board" id="reqBoard"></div>
+  </div>
+</section>
 
-  <!-- SONG LIBRARY -->
-  <section class="section" id="songs">
-    <div class="container">
-      <h2 class="section-title">🎵 Song Library</h2>
-      <p class="section-sub">Search our full catalog — over 10,000 songs available!</p>
-
-      <div class="search-bar-wrap">
-        <input type="text" id="songSearch" class="search-input" placeholder="Search by song title or artist..." />
-        <select id="genreFilter" class="genre-select">
-          <option value="">All Genres</option>
-          <option value="pop">Pop</option>
-          <option value="rock">Rock</option>
-          <option value="country">Country</option>
-          <option value="rnb">R&amp;B / Soul</option>
-          <option value="hiphop">Hip-Hop</option>
-          <option value="80s">80s Hits</option>
-          <option value="90s">90s Hits</option>
-          <option value="latin">Latin</option>
-          <option value="disney">Disney</option>
-          <option value="classic">Classic Rock</option>
-        </select>
+<!-- PRIVATE EVENTS -->
+<section class="section" id="events">
+  <div class="container">
+    <h2 class="section-title">🎉 <span>Book a Private Event</span></h2>
+    <p class="section-sub">Birthdays · Corporate Parties · Weddings · Bar Nights · Any Occasion!</p>
+    <div class="events-wrap">
+      <div>
+        <div class="ev-feat"><div class="ev-icon">🎤</div><div><h4>Professional KJ Setup</h4><p>Full sound system, wireless mics, and Mac's full song library at your venue.</p></div></div>
+        <div class="ev-feat"><div class="ev-icon">🎵</div><div><h4>Massive Song Library</h4><p>From classic hits to today's chart-toppers — every guest will find their song.</p></div></div>
+        <div class="ev-feat"><div class="ev-icon">⭐</div><div><h4>Experienced KJ Host</h4><p>Mac keeps energy high all night — crowd hype, song flow, and unforgettable memories.</p></div></div>
+        <div class="ev-feat"><div class="ev-icon">📍</div><div><h4>Bakersfield &amp; Central Valley</h4><p>Available throughout the area. Contact Mac for travel availability.</p></div></div>
+        <div class="ev-feat"><div class="ev-icon">📞</div><div><h4>Direct Contact</h4><p><a href="tel:6613644388" style="color:var(--cyan)">661-364-4388</a> &nbsp;|&nbsp; <a href="mailto:mac4jams@hotmail.com" style="color:var(--cyan)">mac4jams@hotmail.com</a></p></div></div>
       </div>
-
-      <div class="song-stats">
-        <span id="songCount">Showing all songs</span>
-      </div>
-
-      <div class="song-table-wrap">
-        <table class="song-table">
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Artist</th>
-              <th>Genre</th>
-              <th>Added</th>
-            </tr>
-          </thead>
-          <tbody id="songTableBody">
-          </tbody>
-        </table>
-      </div>
-
-      <div class="no-results" id="noResults" style="display:none">
-        <p>🎵 Don't see your song? <a href="#request">Request it below!</a></p>
-      </div>
-    </div>
-  </section>
-
-  <!-- SCHEDULE -->
-  <section class="section section-dark" id="schedule">
-    <div class="container">
-      <h2 class="section-title">📍 Weekly Schedule</h2>
-      <p class="section-sub">Come sing with us! Here's where Mac will be this week.</p>
-      <div class="schedule-grid" id="scheduleGrid">
-        <!-- Populated by JS -->
-      </div>
-      <p class="schedule-note">✨ Schedule may change — follow Mac on social media for real-time updates!</p>
-    </div>
-  </section>
-
-  <!-- SONG REQUEST -->
-  <section class="section" id="request">
-    <div class="container">
-      <h2 class="section-title">🙋 Request a New Song</h2>
-      <p class="section-sub">Don't see your favorite song in the library? Ask Mac to add it!</p>
       <div class="form-card">
-        <form id="requestForm">
+        <form id="bkForm">
           <div class="form-row">
-            <div class="form-group">
-              <label>Your Name</label>
-              <input type="text" id="reqName" placeholder="Your name" required />
-            </div>
-            <div class="form-group">
-              <label>Email (optional)</label>
-              <input type="email" id="reqEmail" placeholder="Get notified when it's added" />
-            </div>
+            <div class="fg"><label>Your Name *</label><input type="text" id="bName" placeholder="Full name" required/></div>
+            <div class="fg"><label>Phone *</label><input type="tel" id="bPhone" placeholder="(555) 555-5555" required/></div>
           </div>
           <div class="form-row">
-            <div class="form-group">
-              <label>Song Title *</label>
-              <input type="text" id="reqSong" placeholder="Song title" required />
-            </div>
-            <div class="form-group">
-              <label>Artist *</label>
-              <input type="text" id="reqArtist" placeholder="Artist name" required />
+            <div class="fg"><label>Email *</label><input type="email" id="bEmail" placeholder="your@email.com" required/></div>
+            <div class="fg"><label>Event Type *</label>
+              <select id="bType" required>
+                <option value="">Select type…</option>
+                <option>Birthday Party</option><option>Corporate Event</option>
+                <option>Wedding / Reception</option><option>Bar / Club Night</option>
+                <option>Fundraiser</option><option>Other</option>
+              </select>
             </div>
           </div>
-          <div class="form-group">
-            <label>Why do you love this song?</label>
-            <textarea id="reqNote" placeholder="Tell Mac why this song needs to be in the rotation..." rows="3"></textarea>
+          <div class="form-row">
+            <div class="fg"><label>Event Date *</label><input type="date" id="bDate" required/></div>
+            <div class="fg"><label>Estimated Guests</label>
+              <select id="bGuests"><option>Under 50</option><option>50–100</option><option>100–200</option><option>200+</option></select>
+            </div>
           </div>
-          <button type="submit" class="btn btn-primary btn-full">🎤 Submit Request</button>
+          <div class="fg"><label>Venue / Location</label><input type="text" id="bVenue" placeholder="Venue name and address"/></div>
+          <div class="fg"><label>Special Requests / Details</label><textarea id="bNotes" placeholder="Any themes, must-play songs, or details Mac should know…" rows="3"></textarea></div>
+          <button type="submit" class="btn btn-primary btn-full">🎉 Send Booking Request</button>
         </form>
-        <div class="form-success" id="requestSuccess" style="display:none">
-          <div class="success-icon">🎉</div>
-          <h3>Request Submitted!</h3>
-          <p>Mac got your request. You might just hear your song at the next show!</p>
-        </div>
-      </div>
-
-      <!-- Request Board -->
-      <h3 class="subsection-title">📋 Recent Requests</h3>
-      <div class="request-board" id="requestBoard">
-        <!-- Populated by JS -->
-      </div>
-    </div>
-  </section>
-
-  <!-- PRIVATE EVENTS -->
-  <section class="section section-dark" id="events">
-    <div class="container">
-      <h2 class="section-title">🎉 Book a Private Event</h2>
-      <p class="section-sub">Birthdays · Corporate Parties · Weddings · Bar Mitzvahs · Any Occasion!</p>
-      <div class="events-wrap">
-        <div class="events-info">
-          <div class="event-feature">
-            <span class="ef-icon">🎤</span>
-            <div>
-              <h4>Professional KJ Setup</h4>
-              <p>Full sound system, wireless mics, and a massive song library brought right to your venue.</p>
-            </div>
-          </div>
-          <div class="event-feature">
-            <span class="ef-icon">🎵</span>
-            <div>
-              <h4>10,000+ Songs</h4>
-              <p>From classic hits to today's chart-toppers. Every guest will find their favorite.</p>
-            </div>
-          </div>
-          <div class="event-feature">
-            <span class="ef-icon">⭐</span>
-            <div>
-              <h4>Experienced Host</h4>
-              <p>Mac keeps the energy going all night — crowd-hyping, song cueing, and making memories.</p>
-            </div>
-          </div>
-          <div class="event-feature">
-            <span class="ef-icon">📍</span>
-            <div>
-              <h4>Bakersfield & Surrounding Areas</h4>
-              <p>Available throughout the Central Valley. Contact Mac for travel availability.</p>
-            </div>
-          </div>
-        </div>
-        <div class="form-card">
-          <form id="bookingForm">
-            <div class="form-row">
-              <div class="form-group">
-                <label>Your Name *</label>
-                <input type="text" id="bkName" placeholder="Full name" required />
-              </div>
-              <div class="form-group">
-                <label>Phone *</label>
-                <input type="tel" id="bkPhone" placeholder="(555) 555-5555" required />
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label>Email *</label>
-                <input type="email" id="bkEmail" placeholder="your@email.com" required />
-              </div>
-              <div class="form-group">
-                <label>Event Type *</label>
-                <select id="bkType" required>
-                  <option value="">Select event type</option>
-                  <option>Birthday Party</option>
-                  <option>Corporate Event</option>
-                  <option>Wedding / Reception</option>
-                  <option>Bar / Club Night</option>
-                  <option>Fundraiser</option>
-                  <option>Other</option>
-                </select>
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label>Event Date *</label>
-                <input type="date" id="bkDate" required />
-              </div>
-              <div class="form-group">
-                <label>Estimated Guests</label>
-                <select id="bkGuests">
-                  <option>Under 50</option>
-                  <option>50 – 100</option>
-                  <option>100 – 200</option>
-                  <option>200+</option>
-                </select>
-              </div>
-            </div>
-            <div class="form-group">
-              <label>Venue / Location</label>
-              <input type="text" id="bkVenue" placeholder="Venue name and city" />
-            </div>
-            <div class="form-group">
-              <label>Tell Mac About Your Event</label>
-              <textarea id="bkNotes" placeholder="Any special requests, themes, must-play songs, or details Mac should know..." rows="3"></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary btn-full">🎉 Send Booking Request</button>
-          </form>
-          <div class="form-success" id="bookingSuccess" style="display:none">
-            <div class="success-icon">🎉</div>
-            <h3>Booking Request Sent!</h3>
-            <p>Mac will reach out within 24 hours to confirm details and availability.</p>
-          </div>
+        <div class="form-success" id="bkSuccess">
+          <div class="sico">🎉</div>
+          <h3>Booking Request Sent!</h3>
+          <p>Mac will reach out within 24 hours to confirm details and availability.</p>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- TIP MAC -->
-  <section class="section" id="tip">
-    <div class="container">
-      <h2 class="section-title">💸 Tip or Support Mac</h2>
-      <p class="section-sub">Love what Mac does? Show some love! Every tip keeps the music going.</p>
-      <div class="tip-grid">
-        <div class="tip-card" onclick="showQR('cashapp')">
-          <div class="tip-logo cashapp-logo">$</div>
-          <h3>Cash App</h3>
-          <p class="tip-handle">$MacKaraoke</p>
-          <button class="btn btn-tip">Tap to Tip</button>
-        </div>
-        <div class="tip-card" onclick="showQR('venmo')">
-          <div class="tip-logo venmo-logo">V</div>
-          <h3>Venmo</h3>
-          <p class="tip-handle">@Mac-McClanahan</p>
-          <button class="btn btn-tip">Tap to Tip</button>
-        </div>
-        <div class="tip-card" onclick="showQR('zelle')">
-          <div class="tip-logo zelle-logo">Z</div>
-          <h3>Zelle</h3>
-          <p class="tip-handle">Ask Mac for number</p>
-          <button class="btn btn-tip">Tap to Tip</button>
-        </div>
-        <div class="tip-card" onclick="showQR('card')">
-          <div class="tip-logo card-logo">💳</div>
-          <h3>Debit / Credit Card</h3>
-          <p class="tip-handle">Secure card payment</p>
-          <button class="btn btn-tip">Tap to Tip</button>
-        </div>
+<!-- TIP MAC -->
+<section class="section section-alt" id="tip">
+  <div class="container">
+    <h2 class="section-title">💸 <span>Tip or Support Mac</span></h2>
+    <p class="section-sub">Love what Mac does? Every tip keeps the music going — thank you! 🙏</p>
+    <div class="tip-grid">
+      <div class="tip-card" onclick="openTip('cashapp')">
+        <div class="tip-logo ca-logo">$</div>
+        <h3>Cash App</h3>
+        <p class="tip-handle">$MacKJKaraoke</p>
+        <button class="tip-btn">Tap to Tip</button>
+      </div>
+      <div class="tip-card" onclick="openTip('venmo')">
+        <div class="tip-logo vm-logo">V</div>
+        <h3>Venmo</h3>
+        <p class="tip-handle">@Mac-McClanahan</p>
+        <button class="tip-btn">Tap to Tip</button>
+      </div>
+      <div class="tip-card" onclick="openTip('zelle')">
+        <div class="tip-logo ze-logo">Z</div>
+        <h3>Zelle</h3>
+        <p class="tip-handle">Ask Mac directly</p>
+        <button class="tip-btn">Tap to Tip</button>
+      </div>
+      <div class="tip-card" onclick="openTip('paypal')">
+        <div class="tip-logo pp-logo" style="font-size:1rem;font-weight:900">P|P</div>
+        <h3>PayPal</h3>
+        <p class="tip-handle">paypal.me/MacKaraoke</p>
+        <button class="tip-btn">Tap to Tip</button>
+      </div>
+      <div class="tip-card" onclick="openTip('card')">
+        <div class="tip-logo cd-logo">💳</div>
+        <h3>Card Payment</h3>
+        <p class="tip-handle">Via Square</p>
+        <button class="tip-btn">Tap to Tip</button>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- SOCIAL -->
-  <section class="section section-dark" id="social">
-    <div class="container">
-      <h2 class="section-title">📲 Follow Mac</h2>
-      <p class="section-sub">Stay up to date on shows, new songs, and all the karaoke fun!</p>
-      <div class="social-grid">
-        <a href="https://www.facebook.com/The2nsmith" target="_blank" class="social-card facebook">
-          <span class="social-icon">f</span>
-          <span>Facebook</span>
-          <small>@Adventures in Karaoke</small>
-        </a>
-        <a href="#" class="social-card instagram" id="igLink">
-          <span class="social-icon">📸</span>
-          <span>Instagram</span>
-          <small>Coming Soon</small>
-        </a>
-        <a href="#" class="social-card tiktok" id="ttLink">
-          <span class="social-icon">♪</span>
-          <span>TikTok</span>
-          <small>Coming Soon</small>
-        </a>
-        <a href="#" class="social-card youtube" id="ytLink">
-          <span class="social-icon">▶</span>
-          <span>YouTube</span>
-          <small>Coming Soon</small>
-        </a>
-      </div>
+<!-- SOCIAL MEDIA -->
+<section class="section" id="social">
+  <div class="container">
+    <h2 class="section-title">📲 <span>Follow Mac</span></h2>
+    <p class="section-sub">Stay up to date on shows, new songs, and all things karaoke!</p>
+    <div class="social-grid">
+      <a href="https://www.facebook.com/SaxAssured" target="_blank" rel="noopener" class="social-card fb">
+        <span class="soc-icon">f</span><span>Facebook</span><small>@SaxAssured</small>
+      </a>
+      <a href="https://www.instagram.com/saxassured" target="_blank" rel="noopener" class="social-card ig">
+        <span class="soc-icon">📸</span><span>Instagram</span><small>@saxassured</small>
+      </a>
+      <a href="https://www.youtube.com/user/SaxMyAx" target="_blank" rel="noopener" class="social-card yt">
+        <span class="soc-icon">▶</span><span>YouTube</span><small>SaxMyAx</small>
+      </a>
+      <a href="https://www.reverbnation.com/SaxAssured" target="_blank" rel="noopener" class="social-card rn">
+        <span class="soc-icon">🎸</span><span>ReverbNation</span><small>SaxAssured</small>
+      </a>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- CRM / NEWSLETTER -->
-  <section class="section" id="contact">
-    <div class="container">
-      <h2 class="section-title">📬 Stay in the Loop</h2>
-      <p class="section-sub">Sign up to hear about new shows, song additions, and special events from Mac.</p>
-      <div class="form-card crm-card">
+<!-- CRM NEWSLETTER -->
+<section class="section section-alt" id="contact">
+  <div class="container">
+    <h2 class="section-title">📬 <span>Stay in the Loop</span></h2>
+    <p class="section-sub">Sign up to get show updates, new song announcements, and event specials from Mac.</p>
+    <div class="crm-wrap">
+      <div class="form-card">
         <form id="crmForm">
           <div class="form-row">
-            <div class="form-group">
-              <label>First Name *</label>
-              <input type="text" id="crmFirst" placeholder="First name" required />
-            </div>
-            <div class="form-group">
-              <label>Last Name</label>
-              <input type="text" id="crmLast" placeholder="Last name" />
-            </div>
+            <div class="fg"><label>First Name *</label><input type="text" id="cFirst" placeholder="First name" required/></div>
+            <div class="fg"><label>Last Name</label><input type="text" id="cLast" placeholder="Last name"/></div>
           </div>
           <div class="form-row">
-            <div class="form-group">
-              <label>Email *</label>
-              <input type="email" id="crmEmail" placeholder="your@email.com" required />
-            </div>
-            <div class="form-group">
-              <label>Phone (for SMS updates)</label>
-              <input type="tel" id="crmPhone" placeholder="(555) 555-5555" />
+            <div class="fg"><label>Email *</label><input type="email" id="cEmail" placeholder="your@email.com" required/></div>
+            <div class="fg"><label>Phone (for SMS updates)</label><input type="tel" id="cPhone" placeholder="(555) 555-5555"/></div>
+          </div>
+          <div class="fg">
+            <label>I want to hear about…</label>
+            <div class="checks">
+              <label class="chk"><input type="checkbox" value="shows"/> Weekly shows</label>
+              <label class="chk"><input type="checkbox" value="songs"/> New songs added</label>
+              <label class="chk"><input type="checkbox" value="events"/> Private event deals</label>
+              <label class="chk"><input type="checkbox" value="promos"/> Promos &amp; giveaways</label>
             </div>
           </div>
-          <div class="form-group">
-            <label>What are you interested in?</label>
-            <div class="checkbox-group">
-              <label class="checkbox-label"><input type="checkbox" value="shows" /> Weekly show locations</label>
-              <label class="checkbox-label"><input type="checkbox" value="songs" /> New song announcements</label>
-              <label class="checkbox-label"><input type="checkbox" value="events" /> Private event specials</label>
-              <label class="checkbox-label"><input type="checkbox" value="deals" /> Deals &amp; promotions</label>
-            </div>
-          </div>
-          <button type="submit" class="btn btn-primary btn-full">🎤 Subscribe</button>
+          <button type="submit" class="btn btn-primary btn-full">🎤 Subscribe — It's Free!</button>
         </form>
-        <div class="form-success" id="crmSuccess" style="display:none">
-          <div class="success-icon">🎉</div>
+        <div class="form-success" id="crmSuccess">
+          <div class="sico">🎉</div>
           <h3>You're on the list!</h3>
           <p>Mac will keep you posted on all things karaoke. See you at the show!</p>
         </div>
       </div>
     </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer class="footer">
-    <div class="footer-inner">
-      <div class="footer-brand">
-        <span>🎤</span>
-        <span>Adventures in Karaoke</span>
-      </div>
-      <p class="footer-tagline">Hosted by Mac McClanahan · Bakersfield, CA</p>
-      <div class="footer-links">
-        <a href="https://www.facebook.com/The2nsmith" target="_blank">Facebook</a>
-        <a href="#events">Book an Event</a>
-        <a href="#tip">Tip Mac</a>
-        <a href="#contact">Newsletter</a>
-      </div>
-      <p class="footer-copy">&copy; 2026 Adventures in Karaoke. All rights reserved.</p>
-    </div>
-  </footer>
-
-  <!-- TIP MODAL -->
-  <div class="modal-overlay" id="tipModal" onclick="closeQR()">
-    <div class="modal-box" onclick="event.stopPropagation()">
-      <button class="modal-close" onclick="closeQR()">✕</button>
-      <div id="modalContent"></div>
-    </div>
   </div>
+</section>
 
-  <script src="js/data.js"></script>
-  <script src="js/app.js"></script>
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-logo"><span>🎤</span><span>Adventures in Karaoke</span></div>
+  <p class="footer-sub">Hosted by Mac McClanahan · Bakersfield, CA</p>
+  <p class="footer-contact">
+    <a href="tel:6613644388">661-364-4388</a> &nbsp;·&nbsp;
+    <a href="mailto:mac4jams@hotmail.com">mac4jams@hotmail.com</a>
+  </p>
+  <div class="footer-links">
+    <a href="https://www.facebook.com/SaxAssured" target="_blank">Facebook</a>
+    <a href="https://www.instagram.com/saxassured" target="_blank">Instagram</a>
+    <a href="https://www.youtube.com/user/SaxMyAx" target="_blank">YouTube</a>
+    <a href="https://www.reverbnation.com/SaxAssured" target="_blank">ReverbNation</a>
+    <a href="#events">Book an Event</a>
+    <a href="#tip">Tip Mac</a>
+  </div>
+  <p class="footer-copy">&copy; 2026 Adventures in Karaoke · Mac McClanahan · All rights reserved.</p>
+</footer>
+
+<!-- TIP MODAL -->
+<div class="modal-ov" id="tipModal" onclick="closeTip()">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeTip()">✕</button>
+    <div id="tipContent"></div>
+  </div>
+</div>
+
+<!-- ADMIN FAB -->
+<div class="admin-fab">
+  <div class="admin-panel" id="adminPanel">
+    <h3>⚙️ Admin — Add Song</h3>
+    <div class="fg"><label>Song Title</label><input type="text" id="aTitle" placeholder="Song title"/></div>
+    <div class="fg"><label>Artist</label><input type="text" id="aArtist" placeholder="Artist name"/></div>
+    <div class="fg"><label>Genre</label>
+      <select id="aGenre">
+        <option value="pop">Pop</option><option value="rock">Rock</option>
+        <option value="country">Country</option><option value="rnb">R&B</option>
+        <option value="hiphop">Hip-Hop</option><option value="80s">80s</option>
+        <option value="90s">90s</option><option value="latin">Latin</option>
+        <option value="disney">Disney</option><option value="classic">Classic Rock</option>
+      </select>
+    </div>
+    <button class="btn btn-primary btn-full btn-sm" id="aAddBtn">+ Add to Library</button>
+    <p class="admin-note">Songs added here are saved and persist across visits.</p>
+    <div class="admin-hr"></div>
+    <h3>📋 Export Data</h3>
+    <div class="export-btns">
+      <button class="btn btn-outline btn-sm" id="expLeads">Export Newsletter Leads (CSV)</button>
+      <button class="btn btn-outline btn-sm" id="expBookings">Export Bookings (CSV)</button>
+      <button class="btn btn-outline btn-sm" id="expRequests">Export Song Requests (CSV)</button>
+      <button class="btn btn-outline btn-sm" id="expSongs">Export Full Song List (CSV)</button>
+    </div>
+    <div class="admin-hr"></div>
+    <h3>🗑️ Clear Data</h3>
+    <button class="btn btn-sm" style="background:#ff3b30;color:#fff;width:100%;border:none;border-radius:50px;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif" id="clearData">Clear All Stored Data</button>
+  </div>
+  <button class="admin-btn" id="adminToggle">⚙️ Admin</button>
+</div>
+
+<script>
+// ==============================
+// DATA
+// ==============================
+const SONGS_DEFAULT = [
+  {title:"Anti-Hero",artist:"Taylor Swift",genre:"pop",added:"2025-01"},
+  {title:"Shake It Off",artist:"Taylor Swift",genre:"pop",added:"2024-06"},
+  {title:"Levitating",artist:"Dua Lipa",genre:"pop",added:"2024-03"},
+  {title:"As It Was",artist:"Harry Styles",genre:"pop",added:"2024-08"},
+  {title:"Flowers",artist:"Miley Cyrus",genre:"pop",added:"2024-09"},
+  {title:"Blinding Lights",artist:"The Weeknd",genre:"pop",added:"2024-01"},
+  {title:"drivers license",artist:"Olivia Rodrigo",genre:"pop",added:"2024-04"},
+  {title:"good 4 u",artist:"Olivia Rodrigo",genre:"pop",added:"2024-05"},
+  {title:"Bohemian Rhapsody",artist:"Queen",genre:"rock",added:"2023-06"},
+  {title:"Don't Stop Believin'",artist:"Journey",genre:"rock",added:"2023-06"},
+  {title:"Sweet Child O' Mine",artist:"Guns N' Roses",genre:"rock",added:"2023-07"},
+  {title:"Livin' on a Prayer",artist:"Bon Jovi",genre:"rock",added:"2023-07"},
+  {title:"Mr. Brightside",artist:"The Killers",genre:"rock",added:"2024-01"},
+  {title:"Eye of the Tiger",artist:"Survivor",genre:"rock",added:"2023-08"},
+  {title:"Thunder",artist:"Imagine Dragons",genre:"rock",added:"2024-02"},
+  {title:"Take Me Home, Country Roads",artist:"John Denver",genre:"country",added:"2023-06"},
+  {title:"Friends in Low Places",artist:"Garth Brooks",genre:"country",added:"2023-06"},
+  {title:"Jolene",artist:"Dolly Parton",genre:"country",added:"2023-07"},
+  {title:"Before He Cheats",artist:"Carrie Underwood",genre:"country",added:"2024-01"},
+  {title:"Wagon Wheel",artist:"Darius Rucker",genre:"country",added:"2023-11"},
+  {title:"Fast Car",artist:"Luke Combs",genre:"country",added:"2024-06"},
+  {title:"Halo",artist:"Beyoncé",genre:"rnb",added:"2023-06"},
+  {title:"No Scrubs",artist:"TLC",genre:"rnb",added:"2024-01"},
+  {title:"All of Me",artist:"John Legend",genre:"rnb",added:"2023-12"},
+  {title:"Killing Me Softly",artist:"Fugees",genre:"rnb",added:"2024-03"},
+  {title:"Lose Yourself",artist:"Eminem",genre:"hiphop",added:"2023-07"},
+  {title:"Old Town Road",artist:"Lil Nas X",genre:"hiphop",added:"2024-03"},
+  {title:"God's Plan",artist:"Drake",genre:"hiphop",added:"2024-06"},
+  {title:"HUMBLE.",artist:"Kendrick Lamar",genre:"hiphop",added:"2024-04"},
+  {title:"Total Eclipse of the Heart",artist:"Bonnie Tyler",genre:"80s",added:"2023-06"},
+  {title:"Take On Me",artist:"a-ha",genre:"80s",added:"2023-06"},
+  {title:"Girls Just Want to Have Fun",artist:"Cyndi Lauper",genre:"80s",added:"2023-06"},
+  {title:"Africa",artist:"Toto",genre:"80s",added:"2023-10"},
+  {title:"Don't You (Forget About Me)",artist:"Simple Minds",genre:"80s",added:"2023-11"},
+  {title:"Wannabe",artist:"Spice Girls",genre:"90s",added:"2023-06"},
+  {title:"Baby One More Time",artist:"Britney Spears",genre:"90s",added:"2023-06"},
+  {title:"Smells Like Teen Spirit",artist:"Nirvana",genre:"90s",added:"2023-07"},
+  {title:"I Will Always Love You",artist:"Whitney Houston",genre:"90s",added:"2023-09"},
+  {title:"Baby Got Back",artist:"Sir Mix-a-Lot",genre:"90s",added:"2024-01"},
+  {title:"Despacito",artist:"Luis Fonsi ft. Daddy Yankee",genre:"latin",added:"2024-01"},
+  {title:"Hips Don't Lie",artist:"Shakira",genre:"latin",added:"2024-02"},
+  {title:"Livin' la Vida Loca",artist:"Ricky Martin",genre:"latin",added:"2024-05"},
+  {title:"La Bamba",artist:"Los Lobos",genre:"latin",added:"2024-04"},
+  {title:"Let It Go",artist:"Frozen",genre:"disney",added:"2023-06"},
+  {title:"A Whole New World",artist:"Aladdin",genre:"disney",added:"2023-06"},
+  {title:"How Far I'll Go",artist:"Moana",genre:"disney",added:"2024-01"},
+  {title:"Circle of Life",artist:"The Lion King",genre:"disney",added:"2023-07"},
+  {title:"Hotel California",artist:"Eagles",genre:"classic",added:"2023-06"},
+  {title:"Piano Man",artist:"Billy Joel",genre:"classic",added:"2023-06"},
+  {title:"Dream On",artist:"Aerosmith",genre:"classic",added:"2023-09"},
+  {title:"Free Bird",artist:"Lynyrd Skynyrd",genre:"classic",added:"2023-11"},
+  {title:"Roxanne",artist:"The Police",genre:"classic",added:"2024-02"},
+];
+
+const SCHEDULE = [
+  {day:"Tuesday",venue:"Chalet Basque Restaurant",address:"200 Oak St, Bakersfield, CA 93304",time:"7:00 PM – 10:00 PM",active:true},
+  {day:"Thursday",venue:"Stella's Sandtrap",address:"3133 Niles St, Bakersfield, CA 93306",time:"8:00 PM – 11:00 PM",active:true},
+];
+
+const TIP_DATA = {
+  cashapp:{icon:'$',bg:'#00d632',name:'Cash App',handle:'$MacKJKaraoke',note:'Open Cash App and send to the handle above.',link:'https://cash.app/$MacKJKaraoke'},
+  venmo:{icon:'V',bg:'#3d95ce',name:'Venmo',handle:'@Mac-McClanahan',note:'Open Venmo and search for this handle.',link:'https://venmo.com/Mac-McClanahan'},
+  zelle:{icon:'Z',bg:'#6d1ed4',name:'Zelle',handle:'661-364-4388',note:'Open Zelle and send to Mac\'s phone number.',link:null},
+  paypal:{icon:'P',bg:'#003087',name:'PayPal',handle:'paypal.me/MacKaraoke',note:'Click the button below to pay Mac via PayPal.',link:'https://www.paypal.me/MacKaraoke'},
+  card:{icon:'💳',bg:'#ff2d55',name:'Card Payment',handle:'Square — ask Mac',note:'Ask Mac for the card reader or payment link at the show.',link:null},
+};
+
+const GENRE_MAP={pop:'Pop',rock:'Rock',country:'Country',rnb:'R&B',hiphop:'Hip-Hop','80s':'80s','90s':'90s',latin:'Latin',disney:'Disney',classic:'Classic Rock'};
+const MONTHS=['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+// ==============================
+// STORAGE HELPERS (PERSISTENT)
+// ==============================
+function load(key,def){try{const v=localStorage.getItem(key);return v?JSON.parse(v):def}catch{return def}}
+function save(key,val){try{localStorage.setItem(key,JSON.stringify(val))}catch{}}
+
+let SONGS = load('kj_songs', SONGS_DEFAULT);
+
+// ==============================
+// UTILITIES
+// ==============================
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function fmtDate(d){const[y,m]=d.split('-');return `${MONTHS[parseInt(m)||1]} ${y}`}
+
+// ==============================
+// NAVBAR
+// ==============================
+document.getElementById('hamburger').onclick=()=>document.getElementById('navLinks').classList.toggle('open');
+document.querySelectorAll('.nav-links a').forEach(a=>a.addEventListener('click',()=>document.getElementById('navLinks').classList.remove('open')));
+window.addEventListener('scroll',()=>document.getElementById('navbar').style.boxShadow=scrollY>40?'0 4px 20px rgba(0,0,0,.7)':'');
+
+// ==============================
+// SONG LIBRARY
+// ==============================
+function renderSongs(){
+  const q=document.getElementById('songSearch').value.toLowerCase().trim();
+  const g=document.getElementById('genreFilter').value;
+  const filtered=SONGS.filter(s=>(!q||s.title.toLowerCase().includes(q)||s.artist.toLowerCase().includes(q))&&(!g||s.genre===g));
+  document.getElementById('songCount').textContent=`Showing ${filtered.length} of ${SONGS.length} songs`;
+  if(!filtered.length){document.getElementById('songBody').innerHTML='';document.getElementById('noResults').style.display='block';return}
+  document.getElementById('noResults').style.display='none';
+  document.getElementById('songBody').innerHTML=filtered.map(s=>`
+    <tr>
+      <td>${esc(s.title)}</td>
+      <td>${esc(s.artist)}</td>
+      <td><span class="gtag">${GENRE_MAP[s.genre]||s.genre}</span></td>
+      <td>${fmtDate(s.added)}</td>
+    </tr>`).join('');
+}
+document.getElementById('songSearch').addEventListener('input',renderSongs);
+document.getElementById('genreFilter').addEventListener('change',renderSongs);
+renderSongs();
+
+// ==============================
+// SCHEDULE
+// ==============================
+function renderSchedule(){
+  const days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const today=days[new Date().getDay()];
+  document.getElementById('schedGrid').innerHTML=SCHEDULE.map(s=>{
+    const isTonight=s.day===today&&s.active;
+    return `<div class="sched-card${isTonight?' tonight':''}">
+      ${isTonight?'<div class="tonight-badge">TONIGHT!</div>':''}
+      <div class="sched-day">${s.day}</div>
+      <div class="sched-venue">${esc(s.venue)}</div>
+      <div class="sched-addr">📍 ${esc(s.address)}</div>
+      <div class="sched-time">🕗 ${esc(s.time)}</div>
+      ${!s.active?'<div style="margin-top:8px;font-size:.75rem;color:var(--muted);font-style:italic">Private — not open to public</div>':''}
+    </div>`;
+  }).join('');
+}
+renderSchedule();
+
+// ==============================
+// SONG REQUESTS
+// ==============================
+function renderRequests(){
+  const reqs=load('kj_requests',[]);
+  const board=document.getElementById('reqBoard');
+  if(!reqs.length){board.innerHTML='<p style="text-align:center;color:var(--muted);grid-column:1/-1">No requests yet — be the first!</p>';return}
+  board.innerHTML=[...reqs].reverse().slice(0,12).map(r=>`
+    <div class="req-card">
+      <span class="req-status ${r.status==='added'?'s-added':'s-pending'}">${r.status==='added'?'✓ Added':'⏳ Pending'}</span>
+      <div class="req-song">${esc(r.song)}</div>
+      <div class="req-artist">by ${esc(r.artist)}</div>
+      <div class="req-by">Requested by ${esc(r.name)}</div>
+    </div>`).join('');
+}
+
+document.getElementById('reqForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  const req={id:Date.now(),name:document.getElementById('rName').value.trim(),email:document.getElementById('rEmail').value.trim(),song:document.getElementById('rSong').value.trim(),artist:document.getElementById('rArtist').value.trim(),note:document.getElementById('rNote').value.trim(),status:'pending',date:new Date().toISOString()};
+  const reqs=load('kj_requests',[]);reqs.push(req);save('kj_requests',reqs);
+  this.style.display='none';document.getElementById('reqSuccess').style.display='block';
+  renderRequests();
+});
+renderRequests();
+
+// ==============================
+// BOOKING FORM
+// ==============================
+document.getElementById('bkForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  const bk={id:Date.now(),name:document.getElementById('bName').value.trim(),phone:document.getElementById('bPhone').value.trim(),email:document.getElementById('bEmail').value.trim(),type:document.getElementById('bType').value,date:document.getElementById('bDate').value,guests:document.getElementById('bGuests').value,venue:document.getElementById('bVenue').value.trim(),notes:document.getElementById('bNotes').value.trim(),submitted:new Date().toISOString()};
+  const bks=load('kj_bookings',[]);bks.push(bk);save('kj_bookings',bks);
+  this.style.display='none';document.getElementById('bkSuccess').style.display='block';
+});
+
+// ==============================
+// CRM FORM
+// ==============================
+document.getElementById('crmForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  const interests=[...document.querySelectorAll('.checks input:checked')].map(c=>c.value);
+  const lead={id:Date.now(),first:document.getElementById('cFirst').value.trim(),last:document.getElementById('cLast').value.trim(),email:document.getElementById('cEmail').value.trim(),phone:document.getElementById('cPhone').value.trim(),interests,date:new Date().toISOString()};
+  const leads=load('kj_leads',[]);leads.push(lead);save('kj_leads',leads);
+  this.style.display='none';document.getElementById('crmSuccess').style.display='block';
+});
+
+// ==============================
+// TIP MODAL
+// ==============================
+function openTip(type){
+  const d=TIP_DATA[type];
+  document.getElementById('tipContent').innerHTML=`
+    <div class="m-icon" style="background:${d.bg}22;color:${d.bg}">${d.icon}</div>
+    <div class="m-name">${d.name}</div>
+    <div class="m-handle">${d.handle}</div>
+    <p class="m-note">${d.note}</p>
+    ${d.link?`<a href="${d.link}" target="_blank" rel="noopener" class="btn btn-primary m-link">Open ${d.name} ↗</a>`:'<p style="font-size:.8rem;color:var(--muted)">Ask Mac at the show!</p>'}
+    <p style="font-size:.78rem;color:var(--muted);margin-top:16px">Every tip is appreciated! 🙏</p>`;
+  document.getElementById('tipModal').classList.add('open');
+}
+function closeTip(){document.getElementById('tipModal').classList.remove('open')}
+
+// ==============================
+// ADMIN PANEL
+// ==============================
+document.getElementById('adminToggle').onclick=()=>document.getElementById('adminPanel').classList.toggle('open');
+
+document.getElementById('aAddBtn').onclick=()=>{
+  const t=document.getElementById('aTitle').value.trim();
+  const a=document.getElementById('aArtist').value.trim();
+  const g=document.getElementById('aGenre').value;
+  if(!t||!a){alert('Please enter both title and artist');return}
+  const now=new Date();
+  const added=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+  SONGS.unshift({title:t,artist:a,genre:g,added});
+  save('kj_songs',SONGS);renderSongs();
+  document.getElementById('aTitle').value='';document.getElementById('aArtist').value='';
+  alert(`"${t}" by ${a} added! ✅`);
+};
+
+function toCSV(rows){
+  if(!rows.length)return 'No data yet';
+  const keys=Object.keys(rows[0]);
+  return[keys.join(','),...rows.map(r=>keys.map(k=>`"${String(r[k]||'').replace(/"/g,'""')}"`).join(','))].join('\n');
+}
+function dlCSV(csv,name){const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);a.download=name;a.click()}
+
+document.getElementById('expLeads').onclick=()=>dlCSV(toCSV(load('kj_leads',[])),'kj_newsletter_leads.csv');
+document.getElementById('expBookings').onclick=()=>dlCSV(toCSV(load('kj_bookings',[])),'kj_bookings.csv');
+document.getElementById('expRequests').onclick=()=>dlCSV(toCSV(load('kj_requests',[])),'kj_song_requests.csv');
+document.getElementById('expSongs').onclick=()=>dlCSV(toCSV(SONGS),'kj_song_library.csv');
+document.getElementById('clearData').onclick=()=>{if(confirm('Clear ALL stored data? This cannot be undone.')){['kj_leads','kj_bookings','kj_requests','kj_songs'].forEach(k=>localStorage.removeItem(k));SONGS=[...SONGS_DEFAULT];renderSongs();renderRequests();alert('Data cleared.')}};
+
+// ==============================
+// SECTION FADE-IN ANIMATIONS
+// ==============================
+const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)'}}),{threshold:.08});
+document.querySelectorAll('.section').forEach(s=>{s.style.opacity='0';s.style.transform='translateY(20px)';s.style.transition='opacity .6s ease,transform .6s ease';obs.observe(s)});
+</script>
 </body>
 </html>
