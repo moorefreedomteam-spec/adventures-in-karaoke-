@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adventures in Karaoke | Mac McClanahan</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-brand">
+      <span class="brand-icon">🎤</span>
+      <span class="brand-text">Adventures in Karaoke</span>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Menu">&#9776;</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#songs">Songs</a></li>
+      <li><a href="#schedule">Schedule</a></li>
+      <li><a href="#request">Request a Song</a></li>
+      <li><a href="#events">Book an Event</a></li>
+      <li><a href="#tip">Tip Mac</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <div class="hero-logo">🎤</div>
+      <h1 class="hero-title">Adventures in Karaoke</h1>
+      <p class="hero-sub">With Your Host <strong>Mac McClanahan</strong></p>
+      <p class="hero-tagline">The best night out starts with a mic in your hand</p>
+      <div class="hero-btns">
+        <a href="#songs" class="btn btn-primary">Browse Songs</a>
+        <a href="#schedule" class="btn btn-outline">Find Us Tonight</a>
+      </div>
+    </div>
+    <div class="hero-wave">
+      <svg viewBox="0 0 1440 80" preserveAspectRatio="none"><path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="#0d0d1a"/></svg>
+    </div>
+  </section>
+
+  <!-- SONG LIBRARY -->
+  <section class="section" id="songs">
+    <div class="container">
+      <h2 class="section-title">🎵 Song Library</h2>
+      <p class="section-sub">Search our full catalog — over 10,000 songs available!</p>
+
+      <div class="search-bar-wrap">
+        <input type="text" id="songSearch" class="search-input" placeholder="Search by song title or artist..." />
+        <select id="genreFilter" class="genre-select">
+          <option value="">All Genres</option>
+          <option value="pop">Pop</option>
+          <option value="rock">Rock</option>
+          <option value="country">Country</option>
+          <option value="rnb">R&amp;B / Soul</option>
+          <option value="hiphop">Hip-Hop</option>
+          <option value="80s">80s Hits</option>
+          <option value="90s">90s Hits</option>
+          <option value="latin">Latin</option>
+          <option value="disney">Disney</option>
+          <option value="classic">Classic Rock</option>
+        </select>
+      </div>
+
+      <div class="song-stats">
+        <span id="songCount">Showing all songs</span>
+      </div>
+
+      <div class="song-table-wrap">
+        <table class="song-table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Artist</th>
+              <th>Genre</th>
+              <th>Added</th>
+            </tr>
+          </thead>
+          <tbody id="songTableBody">
+          </tbody>
+        </table>
+      </div>
+
+      <div class="no-results" id="noResults" style="display:none">
+        <p>🎵 Don't see your song? <a href="#request">Request it below!</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCHEDULE -->
+  <section class="section section-dark" id="schedule">
+    <div class="container">
+      <h2 class="section-title">📍 Weekly Schedule</h2>
+      <p class="section-sub">Come sing with us! Here's where Mac will be this week.</p>
+      <div class="schedule-grid" id="scheduleGrid">
+        <!-- Populated by JS -->
+      </div>
+      <p class="schedule-note">✨ Schedule may change — follow Mac on social media for real-time updates!</p>
+    </div>
+  </section>
+
+  <!-- SONG REQUEST -->
+  <section class="section" id="request">
+    <div class="container">
+      <h2 class="section-title">🙋 Request a New Song</h2>
+      <p class="section-sub">Don't see your favorite song in the library? Ask Mac to add it!</p>
+      <div class="form-card">
+        <form id="requestForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Your Name</label>
+              <input type="text" id="reqName" placeholder="Your name" required />
+            </div>
+            <div class="form-group">
+              <label>Email (optional)</label>
+              <input type="email" id="reqEmail" placeholder="Get notified when it's added" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Song Title *</label>
+              <input type="text" id="reqSong" placeholder="Song title" required />
+            </div>
+            <div class="form-group">
+              <label>Artist *</label>
+              <input type="text" id="reqArtist" placeholder="Artist name" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Why do you love this song?</label>
+            <textarea id="reqNote" placeholder="Tell Mac why this song needs to be in the rotation..." rows="3"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full">🎤 Submit Request</button>
+        </form>
+        <div class="form-success" id="requestSuccess" style="display:none">
+          <div class="success-icon">🎉</div>
+          <h3>Request Submitted!</h3>
+          <p>Mac got your request. You might just hear your song at the next show!</p>
+        </div>
+      </div>
+
+      <!-- Request Board -->
+      <h3 class="subsection-title">📋 Recent Requests</h3>
+      <div class="request-board" id="requestBoard">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- PRIVATE EVENTS -->
+  <section class="section section-dark" id="events">
+    <div class="container">
+      <h2 class="section-title">🎉 Book a Private Event</h2>
+      <p class="section-sub">Birthdays · Corporate Parties · Weddings · Bar Mitzvahs · Any Occasion!</p>
+      <div class="events-wrap">
+        <div class="events-info">
+          <div class="event-feature">
+            <span class="ef-icon">🎤</span>
+            <div>
+              <h4>Professional KJ Setup</h4>
+              <p>Full sound system, wireless mics, and a massive song library brought right to your venue.</p>
+            </div>
+          </div>
+          <div class="event-feature">
+            <span class="ef-icon">🎵</span>
+            <div>
+              <h4>10,000+ Songs</h4>
+              <p>From classic hits to today's chart-toppers. Every guest will find their favorite.</p>
+            </div>
+          </div>
+          <div class="event-feature">
+            <span class="ef-icon">⭐</span>
+            <div>
+              <h4>Experienced Host</h4>
+              <p>Mac keeps the energy going all night — crowd-hyping, song cueing, and making memories.</p>
+            </div>
+          </div>
+          <div class="event-feature">
+            <span class="ef-icon">📍</span>
+            <div>
+              <h4>Bakersfield & Surrounding Areas</h4>
+              <p>Available throughout the Central Valley. Contact Mac for travel availability.</p>
+            </div>
+          </div>
+        </div>
+        <div class="form-card">
+          <form id="bookingForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Your Name *</label>
+                <input type="text" id="bkName" placeholder="Full name" required />
+              </div>
+              <div class="form-group">
+                <label>Phone *</label>
+                <input type="tel" id="bkPhone" placeholder="(555) 555-5555" required />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Email *</label>
+                <input type="email" id="bkEmail" placeholder="your@email.com" required />
+              </div>
+              <div class="form-group">
+                <label>Event Type *</label>
+                <select id="bkType" required>
+                  <option value="">Select event type</option>
+                  <option>Birthday Party</option>
+                  <option>Corporate Event</option>
+                  <option>Wedding / Reception</option>
+                  <option>Bar / Club Night</option>
+                  <option>Fundraiser</option>
+                  <option>Other</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Event Date *</label>
+                <input type="date" id="bkDate" required />
+              </div>
+              <div class="form-group">
+                <label>Estimated Guests</label>
+                <select id="bkGuests">
+                  <option>Under 50</option>
+                  <option>50 – 100</option>
+                  <option>100 – 200</option>
+                  <option>200+</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Venue / Location</label>
+              <input type="text" id="bkVenue" placeholder="Venue name and city" />
+            </div>
+            <div class="form-group">
+              <label>Tell Mac About Your Event</label>
+              <textarea id="bkNotes" placeholder="Any special requests, themes, must-play songs, or details Mac should know..." rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-full">🎉 Send Booking Request</button>
+          </form>
+          <div class="form-success" id="bookingSuccess" style="display:none">
+            <div class="success-icon">🎉</div>
+            <h3>Booking Request Sent!</h3>
+            <p>Mac will reach out within 24 hours to confirm details and availability.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIP MAC -->
+  <section class="section" id="tip">
+    <div class="container">
+      <h2 class="section-title">💸 Tip or Support Mac</h2>
+      <p class="section-sub">Love what Mac does? Show some love! Every tip keeps the music going.</p>
+      <div class="tip-grid">
+        <div class="tip-card" onclick="showQR('cashapp')">
+          <div class="tip-logo cashapp-logo">$</div>
+          <h3>Cash App</h3>
+          <p class="tip-handle">$MacKaraoke</p>
+          <button class="btn btn-tip">Tap to Tip</button>
+        </div>
+        <div class="tip-card" onclick="showQR('venmo')">
+          <div class="tip-logo venmo-logo">V</div>
+          <h3>Venmo</h3>
+          <p class="tip-handle">@Mac-McClanahan</p>
+          <button class="btn btn-tip">Tap to Tip</button>
+        </div>
+        <div class="tip-card" onclick="showQR('zelle')">
+          <div class="tip-logo zelle-logo">Z</div>
+          <h3>Zelle</h3>
+          <p class="tip-handle">Ask Mac for number</p>
+          <button class="btn btn-tip">Tap to Tip</button>
+        </div>
+        <div class="tip-card" onclick="showQR('card')">
+          <div class="tip-logo card-logo">💳</div>
+          <h3>Debit / Credit Card</h3>
+          <p class="tip-handle">Secure card payment</p>
+          <button class="btn btn-tip">Tap to Tip</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOCIAL -->
+  <section class="section section-dark" id="social">
+    <div class="container">
+      <h2 class="section-title">📲 Follow Mac</h2>
+      <p class="section-sub">Stay up to date on shows, new songs, and all the karaoke fun!</p>
+      <div class="social-grid">
+        <a href="https://www.facebook.com/The2nsmith" target="_blank" class="social-card facebook">
+          <span class="social-icon">f</span>
+          <span>Facebook</span>
+          <small>@Adventures in Karaoke</small>
+        </a>
+        <a href="#" class="social-card instagram" id="igLink">
+          <span class="social-icon">📸</span>
+          <span>Instagram</span>
+          <small>Coming Soon</small>
+        </a>
+        <a href="#" class="social-card tiktok" id="ttLink">
+          <span class="social-icon">♪</span>
+          <span>TikTok</span>
+          <small>Coming Soon</small>
+        </a>
+        <a href="#" class="social-card youtube" id="ytLink">
+          <span class="social-icon">▶</span>
+          <span>YouTube</span>
+          <small>Coming Soon</small>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CRM / NEWSLETTER -->
+  <section class="section" id="contact">
+    <div class="container">
+      <h2 class="section-title">📬 Stay in the Loop</h2>
+      <p class="section-sub">Sign up to hear about new shows, song additions, and special events from Mac.</p>
+      <div class="form-card crm-card">
+        <form id="crmForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label>First Name *</label>
+              <input type="text" id="crmFirst" placeholder="First name" required />
+            </div>
+            <div class="form-group">
+              <label>Last Name</label>
+              <input type="text" id="crmLast" placeholder="Last name" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Email *</label>
+              <input type="email" id="crmEmail" placeholder="your@email.com" required />
+            </div>
+            <div class="form-group">
+              <label>Phone (for SMS updates)</label>
+              <input type="tel" id="crmPhone" placeholder="(555) 555-5555" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>What are you interested in?</label>
+            <div class="checkbox-group">
+              <label class="checkbox-label"><input type="checkbox" value="shows" /> Weekly show locations</label>
+              <label class="checkbox-label"><input type="checkbox" value="songs" /> New song announcements</label>
+              <label class="checkbox-label"><input type="checkbox" value="events" /> Private event specials</label>
+              <label class="checkbox-label"><input type="checkbox" value="deals" /> Deals &amp; promotions</label>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full">🎤 Subscribe</button>
+        </form>
+        <div class="form-success" id="crmSuccess" style="display:none">
+          <div class="success-icon">🎉</div>
+          <h3>You're on the list!</h3>
+          <p>Mac will keep you posted on all things karaoke. See you at the show!</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span>🎤</span>
+        <span>Adventures in Karaoke</span>
+      </div>
+      <p class="footer-tagline">Hosted by Mac McClanahan · Bakersfield, CA</p>
+      <div class="footer-links">
+        <a href="https://www.facebook.com/The2nsmith" target="_blank">Facebook</a>
+        <a href="#events">Book an Event</a>
+        <a href="#tip">Tip Mac</a>
+        <a href="#contact">Newsletter</a>
+      </div>
+      <p class="footer-copy">&copy; 2026 Adventures in Karaoke. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- TIP MODAL -->
+  <div class="modal-overlay" id="tipModal" onclick="closeQR()">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeQR()">✕</button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
